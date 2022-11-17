@@ -1,4 +1,20 @@
 version: '3.9'
 services:
   grpc:
-    
+    build:
+      dockerfile: ./docker/grpc/Dockerfile
+      context: ./
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+  rdb:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: grpc-up-and-running
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+volumes:
+  mysql-volume:

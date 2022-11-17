@@ -15,9 +15,9 @@ func main() {
 	mux := http.NewServeMux()
 	path, handler := productv1connect.NewProductServiceHandler(productsServer)
 	mux.Handle(path, handler)
-	fmt.Println("path", path)
+	fmt.Println("listen 8080")
 	http.ListenAndServe(
-		"localhost:50001",
+		"localhost:8080",
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
 }

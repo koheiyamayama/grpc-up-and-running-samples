@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package proto.categories.v1;
+
+option go_package = "github.com/koheiyamayama/grpc-up-and-running-samples/gen/proto/categories/v1;categoryv1";
+
+message Category {
+  string id = 1;
+  string name = 2;
+}

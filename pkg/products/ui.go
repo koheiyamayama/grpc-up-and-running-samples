@@ -4,16 +4,17 @@ import (
 	"context"
 
 	"github.com/bufbuild/connect-go"
+	categoryv1 "github.com/koheiyamayama/grpc-up-and-running-samples/gen/proto/categories/v1"
 	productv1 "github.com/koheiyamayama/grpc-up-and-running-samples/gen/proto/products/v1"
 )
 
 type ProductsServer struct {
-	ProductDAO ProductsRepository
+	productClient ProductsRepository
 }
 
-func NewProductsServer(dao ProductsRepository) *ProductsServer {
+func NewProductsServer(productRepo ProductsRepository) *ProductsServer {
 	return &ProductsServer{
-		ProductDAO: dao,
+		productClient: productRepo,
 	}
 }
 
@@ -21,7 +22,7 @@ func (s *ProductsServer) GetProduct(
 	ctx context.Context,
 	req *connect.Request[productv1.GetProductRequest],
 ) (*connect.Response[productv1.GetProductResponse], error) {
-	p, err := s.ProductDAO.GetProduct(ctx, GetProductParams{ID: req.Msg.ProductId})
+	p, err := s.productClient.GetProduct(ctx, GetProductParams{ID: req.Msg.ProductId})
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -31,16 +32,17 @@ func (s *ProductsServer) GetProduct(
 			Name:          p.Name,
 			SalePrice:     p.SalePrice,
 			OriginalPrice: p.OriginalPrice,
-			Categories: []*productv1.Category{
-				{
-					Id:   "categoryOne",
-					Name: "アニメ",
-				},
-				{
-					Id:   "categoryTwo",
-					Name: "少年漫画",
-				},
-			},
+			Categories: func() []*categoryv1.Category {
+				categories := make([]*categoryv1.Category, len(p.Categories))
+				for i, c := range p.Categories {
+					categories[i] = &categoryv1.Category{
+						Id:   c.ID,
+						Name: c.Name,
+					}
+				}
+
+				return categories
+			}(),
 		},
 	})
 

@@ -1,6 +1,10 @@
 package products
 
-import "context"
+import (
+	"context"
+
+	"github.com/koheiyamayama/grpc-up-and-running-samples/pkg/categories"
+)
 
 type ProductsRepository interface {
 	GetProduct(ctx context.Context, params GetProductParams) (*GetProductRecord, error)
@@ -15,10 +19,5 @@ type GetProductRecord struct {
 	Name          string
 	OriginalPrice int64
 	SalePrice     int64
-	Categories    []CategoryRecord
-}
-
-type CategoryRecord struct {
-	ID   string
-	Name string
+	Categories    []categories.Category
 }

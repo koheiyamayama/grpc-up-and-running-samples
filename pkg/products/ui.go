@@ -2,17 +2,19 @@ package products
 
 import (
 	"context"
+	"errors"
 
 	"github.com/bufbuild/connect-go"
 	categoryv1 "github.com/koheiyamayama/grpc-up-and-running-samples/gen/proto/categories/v1"
 	productv1 "github.com/koheiyamayama/grpc-up-and-running-samples/gen/proto/products/v1"
+	productsRepo "github.com/koheiyamayama/grpc-up-and-running-samples/pkg/products/repository"
 )
 
 type ProductsServer struct {
-	productClient ProductsRepository
+	productClient productsRepo.ProductsRepository
 }
 
-func NewProductsServer(productRepo ProductsRepository) *ProductsServer {
+func NewProductsServer(productRepo productsRepo.ProductsRepository) *ProductsServer {
 	return &ProductsServer{
 		productClient: productRepo,
 	}
@@ -22,10 +24,13 @@ func (s *ProductsServer) GetProduct(
 	ctx context.Context,
 	req *connect.Request[productv1.GetProductRequest],
 ) (*connect.Response[productv1.GetProductResponse], error) {
-	p, err := s.productClient.GetProduct(ctx, GetProductParams{ID: req.Msg.ProductId})
+	p, err := s.productClient.GetProduct(ctx, productsRepo.GetProductParams{ID: req.Msg.ProductId})
 	if err != nil {
-		// TODO: エラーハンドリングちゃんとする
-		return nil, connect.NewError(connect.CodeInternal, err)
+		if errors.Is(err, productsRepo.ErrNotFound) {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		} else {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
 	}
 	res := connect.NewResponse(&productv1.GetProductResponse{
 		Product: &productv1.Product{

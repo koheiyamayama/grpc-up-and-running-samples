@@ -21,7 +21,7 @@ func main() {
 	res, err := client.GetProduct(
 		context.Background(),
 		connect.NewRequest(&productv1.GetProductRequest{
-			ProductId: "2",
+			ProductId: "11",
 		}),
 	)
 

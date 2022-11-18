@@ -24,6 +24,7 @@ func (s *ProductsServer) GetProduct(
 ) (*connect.Response[productv1.GetProductResponse], error) {
 	p, err := s.productClient.GetProduct(ctx, GetProductParams{ID: req.Msg.ProductId})
 	if err != nil {
+		// TODO: エラーハンドリングちゃんとする
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	res := connect.NewResponse(&productv1.GetProductResponse{

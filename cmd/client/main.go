@@ -15,13 +15,13 @@ import (
 func main() {
 	client := productv1connect.NewProductServiceClient(
 		http.DefaultClient,
-		"http://localhost:50001",
+		"http://grpc-server:8080",
 	)
 
 	res, err := client.GetProduct(
 		context.Background(),
 		connect.NewRequest(&productv1.GetProductRequest{
-			ProductId: "gussan",
+			ProductId: "2",
 		}),
 	)
 

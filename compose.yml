@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  grpc:
+  grpc-server:
     build:
       dockerfile: ./docker/grpc/Dockerfile
       context: ./
@@ -8,6 +8,13 @@ services:
       - "8080:8080"
     volumes:
       - ./:/app
+  grpc-client:
+    build:
+      dockerfile: ./docker/grpc/Dockerfile
+      context: ./
+    command: echo "do nothing"
+    volumes:
+      - ./:/app                
   rdb:
     image: mysql:latest
     environment:

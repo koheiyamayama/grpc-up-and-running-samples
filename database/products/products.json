@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "RTX4080",
+    "sale_price": 300000,
+    "original_price": 280000,
+    "category_ids": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": "2",
+    "name": "RTX4090",
+    "sale_price": 330000,
+    "original_price": 300000,
+    "category_ids": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": "3",
+    "name": "RTX3080",
+    "sale_price": 280000,
+    "original_price": 260000,
+    "category_ids": [
+      4,
+      5
+    ]
+  },
+  {
+    "id": "4",
+    "name": "RTX3080ti",
+    "sale_price": 285000,
+    "original_price": 265000,
+    "category_ids": [
+      4,
+      6
+    ]
+  },
+  {
+    "id": "5",
+    "name": "RTX3090",
+    "sale_price": 290000,
+    "original_price": 270000,
+    "category_ids": [
+      4,
+      7
+    ]
+  }
+]
